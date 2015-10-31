@@ -1,6 +1,6 @@
 package citrus.utils {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.view.ICitrusArt;
 	import org.osflash.signals.Signal;
 
@@ -33,7 +33,7 @@ package citrus.utils {
 		 */
 		public function LoadManager() {
 			
-			onLoaded = new Signal(CitrusObject,ICitrusArt);
+			onLoaded = new Signal(ICitrusObject,ICitrusArt);
 			onLoadComplete = new Signal();
 		}
 
@@ -78,7 +78,7 @@ package citrus.utils {
 		 * @param recursionDepth How many child objects the add() method should recurse through before giving up searching for a Loader object.
 		 * @return Whether or not it found a loader object.
 		 */
-		public function add(potentialLoader:*,object:CitrusObject, recursionDepth:Number = 1):Boolean {
+		public function add(potentialLoader:*,object:ICitrusObject, recursionDepth:Number = 1):Boolean {
 			
 			var loader:Loader;
 
@@ -127,7 +127,7 @@ package citrus.utils {
 
 		private function handleLoaderComplete(e:Event):void {
 			
-			var citrusObject:CitrusObject = _objects[e.target.loader].co;
+			var citrusObject:ICitrusObject = _objects[e.target.loader].co;
 			var art:ICitrusArt = _objects[e.target.loader].art;
 			
 			onLoaded.dispatch(citrusObject,_objects[e.target.loader].art as ICitrusArt);

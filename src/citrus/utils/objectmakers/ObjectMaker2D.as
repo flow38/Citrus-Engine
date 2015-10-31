@@ -1,7 +1,7 @@
 package citrus.utils.objectmakers {
 	
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.core.IState;
 	import citrus.objects.CitrusSprite;
 	import citrus.utils.objectmakers.tmx.TmxLayer;
@@ -33,7 +33,7 @@ package citrus.utils.objectmakers {
 		
 		/**
 		 * You can pass a custom-created MovieClip object into this method to auto-create CitrusObjects.
-		 * This method looks at all the children of the MovieClip you passed in, and creates a CitrusObject with the
+		 * This method looks at all the children of the MovieClip you passed in, and creates a ICitrusObject with the
 		 * x, y, width, height, name, and rotation of the of MovieClip.
 		 *
 		 * <p>You may use the powerful Inspectable metadata tag : in your fla file, add the path to the libraries and
@@ -42,13 +42,13 @@ package citrus.utils.objectmakers {
 		 *
 		 * <p>You can also add properties directly in your MovieClips, follow this step :</p>
 		 *
-		 * <p>In order for this to properly create a CitrusObject from a MovieClip, the MovieClip needs to have a variable
+		 * <p>In order for this to properly create a ICitrusObject from a MovieClip, the MovieClip needs to have a variable
 		 * called <code>classPath</code> on it, which will provide, in String form, the full
 		 * package and class name of the Citrus Object that it is supposed to create (such as "myGame.MyHero"). You can specify
 		 * this in frame 1 of the MovieClip asset in Flash.</p>
 		 *
-		 * <p>You can also initialize your CitrusObject's parameters by creating a "params" variable (of type Object)
-		 * on your MovieClip. The "params" object will be passed into the newly created CitrusObject.</p>
+		 * <p>You can also initialize your ICitrusObject's parameters by creating a "params" variable (of type Object)
+		 * on your MovieClip. The "params" object will be passed into the newly created ICitrusObject.</p>
 		 *
 		 * <p>So, within the first frame of each child-MovieClip of the "layout" MovieClip,
 		 * you should specify something like the following:</p>
@@ -96,7 +96,7 @@ package citrus.utils.objectmakers {
 						}
 					}
 					
-					var object:CitrusObject = new objectClass(child.name, params);
+					var object:ICitrusObject = new objectClass(child.name, params);
 					a.push(object);
 				}
 			}
@@ -122,8 +122,8 @@ package citrus.utils.objectmakers {
 		 * @param levelXML the TMX provided by the Tiled Map Editor software, convert it into an xml before.
 		 * @param images an array of bitmap used by tileSets. The name of the bitmap must correspond to the tileSet image source name.
 		 * @param addToCurrentState Automatically adds all CitrusObjects that get created to the current state.
-		 * @return An array of <code>CitrusObject</code> with all objects created.
-		 * @see CitrusObject
+		 * @return An array of <code>ICitrusObject</code> with all objects created.
+		 * @see ICitrusObject
 		 */
 		public static function FromTiledMap(levelXML:XML, images:Array, addToCurrentState:Boolean = true):Array {
 			var objects:Array = [];
@@ -141,7 +141,7 @@ package citrus.utils.objectmakers {
 			
 			const ce:CitrusEngine = CitrusEngine.getInstance();
 			if (addToCurrentState) {
-				for each (var object:CitrusObject in objects) {
+				for each (var object:ICitrusObject in objects) {
 					ce.state.add(object);
 				}
 			}
@@ -296,7 +296,7 @@ package citrus.utils.objectmakers {
 		
 		static private function addTiledObjectgroup(group:TmxObjectGroup, objects:Array):void {
 			var objectClass:Class;
-			var object:CitrusObject;
+			var object:ICitrusObject;
 			var params:Object;
 			
 			for each (var objectTmx:TmxObject in group.objects) {
@@ -351,7 +351,7 @@ package citrus.utils.objectmakers {
 		 * @param levelXML An XML level object created by GLEED2D.
 		 * @param addToCurrentState Automatically adds all CitrusObjects that get created to the current state.
 		 * @param layerIndexProperty Gleed's layer indexes will be assigned to the specified property.
-		 * @param defaultClassName If a className custom property is not specified on a GLEED2D asset, this is the default CitrusObject class that gets created.
+		 * @param defaultClassName If a className custom property is not specified on a GLEED2D asset, this is the default ICitrusObject class that gets created.
 		 * @return An array of CitrusObjects. If the <code>addToCurrentState</code> property is false, you will still need to add these to the state.
 		 *
 		 */
@@ -404,9 +404,9 @@ package citrus.utils.objectmakers {
 							object[customPropXML.@Name.toString()] = customPropXML.string.toString();
 					}
 					
-					// Make the CitrusObject and add it to the current state.
+					// Make the ICitrusObject and add it to the current state.
 					var citrusClass:Class = getDefinitionByName(className) as Class;
-					var citrusObject:CitrusObject = new citrusClass(objectName, object);
+					var citrusObject:ICitrusObject = new citrusClass(objectName, object);
 					if (addToCurrentState)
 						ce.state.add(citrusObject);
 					
@@ -444,7 +444,7 @@ package citrus.utils.objectmakers {
 						throw e;
 					}
 				}
-				var theObject:CitrusObject = new theClass(objectXML.@name, params);
+				var theObject:ICitrusObject = new theClass(objectXML.@name, params);
 				array.push(theObject);
 				if (addToCurrentState)
 					state.add(theObject);

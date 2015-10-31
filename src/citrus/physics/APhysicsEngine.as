@@ -1,12 +1,12 @@
 package citrus.physics {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.view.ICitrusArt;
 
 	/**
 	 * An abstract template used by every physics engine.
 	 */
-	public class APhysicsEngine extends CitrusObject {
+	public class APhysicsEngine extends ICitrusObject {
 		
 		protected var _visible:Boolean = false;
 		protected var _touchable:Boolean = false;

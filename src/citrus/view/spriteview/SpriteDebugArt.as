@@ -1,7 +1,7 @@
 package citrus.view.spriteview 
 {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.objects.CitrusSprite;
 
 	import flash.display.MovieClip;
@@ -16,7 +16,7 @@ package citrus.view.spriteview
 		{
 		}
 		
-		public function initialize(object:CitrusObject):void
+		public function initialize(object:ICitrusObject):void
 		{
 			var citrusSprite:CitrusSprite = object as CitrusSprite;
 			

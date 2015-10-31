@@ -2,7 +2,7 @@ package citrus.objects.common
 {
 
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.view.blittingview.BlittingArt;
 	import citrus.view.blittingview.BlittingView;
 	
@@ -10,7 +10,7 @@ package citrus.objects.common
 	 * An emitter creates particles at a specified rate with specified distribution properties. You can set the emitter's x and y
 	 * location at any time as well as change the graphic of the particles that the emitter makes.
 	 */
-	public class Emitter extends CitrusObject
+	public class Emitter extends ICitrusObject
 	{
 		/**
 		 * The X position where the particles will emit from.
@@ -174,7 +174,7 @@ package citrus.objects.common
 		}
 		
 		/**
-		 * The graphic that will be generated for each particle. This works just like the CitrusObject's view property.
+		 * The graphic that will be generated for each particle. This works just like the ICitrusObject's view property.
 		 * The value can be 1) The path to an external image, 2) A DisplayObject class (not an instance) in String notation
 		 * (view: "com.graphics.myParticle") or 3) A DisplayObject class (not an instance) in Object notation
 		 * (view: MyParticle). See the documentation for ISpriteView.view for more info.

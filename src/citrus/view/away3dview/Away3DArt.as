@@ -5,7 +5,7 @@ package citrus.view.away3dview {
 	import away3d.loaders.Loader3D;
 
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.core.IState;
 	import citrus.core.away3d.Away3DCitrusEngine;
 	import citrus.physics.APhysicsEngine;
@@ -66,7 +66,7 @@ package citrus.view.away3dview {
 			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
 				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");
 
-			this.name = (_citrusObject as CitrusObject).name;
+			this.name = (_citrusObject as ICitrusObject).name;
 		}
 
 		/**
@@ -172,7 +172,7 @@ package citrus.view.away3dview {
 					// view property is a Display Object reference
 					_content = _view;
 				} else
-					throw new Error("Away3DArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
+					throw new Error("Away3DArt doesn't know how to create a graphic object from the provided ICitrusObject " + citrusObject);
 
 				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))

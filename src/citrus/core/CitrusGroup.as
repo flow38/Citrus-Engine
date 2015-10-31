@@ -9,7 +9,7 @@ package citrus.core {
 	 */
 	public class CitrusGroup extends Entity {
 
-		protected var _groupObjects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+		protected var _groupObjects:Vector.<ICitrusObject> = new Vector.<ICitrusObject>();
 
 		public function CitrusGroup(name:String, params:Object = null) {
 			super(name, params);
@@ -27,7 +27,7 @@ package citrus.core {
 		 * @param object An object to add to the group.
 		 * @return return the CitrusGroup for chained operation.
 		 */
-		public function addObject(object:CitrusObject):CitrusGroup {
+		public function addObject(object:ICitrusObject):CitrusGroup {
 
 			_groupObjects.push(object);
 			
@@ -39,7 +39,7 @@ package citrus.core {
 		 * @param object An object to remove from the group.
 		 * @return return the CitrusGroup for chained operation.
 		 */
-		public function removeObject(object:CitrusObject):CitrusGroup {
+		public function removeObject(object:ICitrusObject):CitrusGroup {
 
 			_groupObjects.splice(_groupObjects.indexOf(object), 1);
 			
@@ -47,17 +47,17 @@ package citrus.core {
 		}
 		
 		/**
-		 * Define properties for all objects into the group like we do for a CitrusObject.
+		 * Define properties for all objects into the group like we do for a ICitrusObject.
 		 * @param param An object where properties and value are defined.
 		 */
 		public function setParamsOnObjects(param:Object):void {
 
-			for each (var object:CitrusObject in _groupObjects)				
+			for each (var object:ICitrusObject in _groupObjects)
 				setParams(object, param);
 		}
 		
 		/**
-		 * Define properties for all objects' view into the group like we do for a CitrusObject.
+		 * Define properties for all objects' view into the group like we do for a ICitrusObject.
 		 * @param param An object where properties and value are defined.
 		 */
 		public function setParamsOnViews(param:Object):void {
@@ -67,13 +67,13 @@ package citrus.core {
 		}
 		
 		/**
-		 * Gets a reference to a CitrusObject by passing that object's name in.
+		 * Gets a reference to a ICitrusObject by passing that object's name in.
 		 * Often the name property will be set via a level editor such as the Flash IDE. 
 		 * @param name The name property of the object you want to get a reference to.
 		 */
-		public function getObjectByName(name:String):CitrusObject {
+		public function getObjectByName(name:String):ICitrusObject {
 
-			for each (var object:CitrusObject in _groupObjects) {
+			for each (var object:ICitrusObject in _groupObjects) {
 				if (object.name == name)
 					return object;
 			}
@@ -87,11 +87,11 @@ package citrus.core {
 		 * coins plus enemies that you've named exactly the same. Then you'd loop through the returned vector to change properties or whatever you want.
 		 * @param name The name property of the object you want to get a reference to.
 		 */
-		public function getObjectsByName(name:String):Vector.<CitrusObject> {
+		public function getObjectsByName(name:String):Vector.<ICitrusObject> {
 
-			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+			var objects:Vector.<ICitrusObject> = new Vector.<ICitrusObject>();
 
-			for each (var object:CitrusObject in _groupObjects) {
+			for each (var object:ICitrusObject in _groupObjects) {
 				if (object.name == name)
 					objects.push(object);
 			}
@@ -100,13 +100,13 @@ package citrus.core {
 		}
 
 		/**
-		 * Returns the first instance of a CitrusObject that is of the class that you pass in. 
+		 * Returns the first instance of a ICitrusObject that is of the class that you pass in.
 		 * This is useful if you know that there is only one object of a certain time in your state (such as a "Hero").
 		 * @param type The class of the object you want to get a reference to.
 		 */
-		public function getFirstObjectByType(type:Class):CitrusObject {
+		public function getFirstObjectByType(type:Class):ICitrusObject {
 
-			for each (var object:CitrusObject in _groupObjects) {
+			for each (var object:ICitrusObject in _groupObjects) {
 				if (object is type)
 					return object;
 			}
@@ -120,11 +120,11 @@ package citrus.core {
 		 * of type "Coin" via this method. Then you'd loop through the returned array to add your listener to the coins' event.
 		 * @param type The class of the object you want to get a reference to.
 		 */
-		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
+		public function getObjectsByType(type:Class):Vector.<ICitrusObject> {
 
-			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+			var objects:Vector.<ICitrusObject> = new Vector.<ICitrusObject>();
 
-			for each (var object:CitrusObject in _groupObjects) {
+			for each (var object:ICitrusObject in _groupObjects) {
 				if (object is type) {
 					objects.push(object);
 				}
@@ -136,7 +136,7 @@ package citrus.core {
 		/**
 		 * groupObjects is a vector containing all the objects registered into the group.
 		 */
-		public function get groupObjects():Vector.<CitrusObject> {
+		public function get groupObjects():Vector.<ICitrusObject> {
 			return _groupObjects;
 		}
 		

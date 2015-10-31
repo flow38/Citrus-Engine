@@ -1,6 +1,6 @@
 package citrus.objects {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.math.MathVector;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
@@ -19,7 +19,7 @@ package citrus.objects {
 	 * <p>With a CitrusSprite, there is only simple collision and velocity logic. If you'd like to take advantage of Box2D or Nape physics,
 	 * you should extend the APhysicsObject class instead.</p>
 	 */	
-	public class CitrusSprite extends CitrusObject implements ISpriteView
+	public class CitrusSprite extends ICitrusObject implements ISpriteView
 	{
 		public var collisions:Dictionary = new Dictionary();
 		

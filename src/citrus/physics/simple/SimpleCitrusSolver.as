@@ -1,7 +1,7 @@
 package citrus.physics.simple {
 
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 
@@ -18,7 +18,7 @@ package citrus.physics.simple {
 	 * <p>After you create your CitrusSolver instance, you will want to call the <code>collide</code> and/or <code>overlap</code> methods to tell the solver which object types to test for collisions/overlaps
 	 * against. See the documentation for those two classes for more info.</p>
 	 */
-	public class SimpleCitrusSolver extends CitrusObject {
+	public class SimpleCitrusSolver extends ICitrusObject {
 
 		private var _collideChecks:Array = [];
 		private var _overlapChecks:Array = [];
@@ -66,12 +66,12 @@ package citrus.physics.simple {
 					throw new Error("CitrusSolver does not test collisions against objects of the same type.");
 				} else {
 					// compare A's to B's
-					var groupA:Vector.<CitrusObject> = _ce.state.getObjectsByType(pair.a);
+					var groupA:Vector.<ICitrusObject> = _ce.state.getObjectsByType(pair.a);
 					
 					for (var i:uint = 0; i < groupA.length; ++i) {
 						
 						var itemA:CitrusSprite = groupA[i] as CitrusSprite;
-						var groupB:Vector.<CitrusObject> = _ce.state.getObjectsByType(pair.b);
+						var groupB:Vector.<ICitrusObject> = _ce.state.getObjectsByType(pair.b);
 						
 						for (var j:uint = 0; j < groupB.length; ++j) {
 							
@@ -86,7 +86,7 @@ package citrus.physics.simple {
 				
 				if (pair.a == pair.b) {
 					// compare A's to each other
-					var group:Vector.<CitrusObject> = _ce.state.getObjectsByType(pair.a);
+					var group:Vector.<ICitrusObject> = _ce.state.getObjectsByType(pair.a);
 					
 					for (i = 0; i < groupA.length; ++i) {
 						

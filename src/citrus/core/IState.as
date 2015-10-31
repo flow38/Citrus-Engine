@@ -16,18 +16,18 @@ package citrus.core {
 		
 		function update(timeDelta:Number):void;
 		
-		function add(object:CitrusObject):CitrusObject;
+		function add(object:ICitrusObject):ICitrusObject;
 		
 		function addEntity(entity:Entity):Entity;
 		
-		function remove(object:CitrusObject):void;
+		function remove(object:ICitrusObject):void;
 		
-		function removeImmediately(object:CitrusObject):void;
+		function removeImmediately(object:ICitrusObject):void;
 		
-		function getObjectByName(name:String):CitrusObject;
+		function getObjectByName(name:String):ICitrusObject;
 		
-		function getFirstObjectByType(type:Class):CitrusObject;
+		function getFirstObjectByType(type:Class):ICitrusObject;
 		
-		function getObjectsByType(type:Class):Vector.<CitrusObject>;
+		function getObjectsByType(type:Class):Vector.<ICitrusObject>;
 	}
 }

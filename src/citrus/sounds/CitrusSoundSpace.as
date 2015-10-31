@@ -1,6 +1,6 @@
 package citrus.sounds 
 {
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
@@ -11,7 +11,7 @@ package citrus.sounds
 	/**
 	 * Experimental spatial sound system
 	 */
-	public class CitrusSoundSpace extends CitrusObject implements ISpriteView
+	public class CitrusSoundSpace extends ICitrusObject implements ISpriteView
 	{
 		protected var _visible:Boolean = false;
 		protected var _touchable:Boolean = false;

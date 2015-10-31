@@ -257,8 +257,8 @@ package citrus.core {
 		 * The console can be opened by pressing the tab key.
 		 * There is one console command built-in by default, but you can add more by using the addCommand() method.
 		 * 
-		 * <p>To try it out, try using the "set" command to change a property on a CitrusObject. You can toggle Box2D's
-		 * debug draw visibility like this "set Box2D visible false". If your Box2D CitrusObject instance is not named
+		 * <p>To try it out, try using the "set" command to change a property on a ICitrusObject. You can toggle Box2D's
+		 * debug draw visibility like this "set Box2D visible false". If your Box2D ICitrusObject instance is not named
 		 * "Box2D", use the name you gave it instead.</p>
 		 */		
 		public function get console():Console
@@ -416,7 +416,7 @@ package citrus.core {
 		
 		private function handleConsoleSetCommand(objectName:String, paramName:String, paramValue:String):void
 		{
-			var object:CitrusObject = _state.getObjectByName(objectName);
+			var object:ICitrusObject = _state.getObjectByName(objectName);
 			
 			if (!object)
 			{
@@ -440,7 +440,7 @@ package citrus.core {
 		
 		private function handleConsoleGetCommand(objectName:String, paramName:String):void
 		{
-			var object:CitrusObject = _state.getObjectByName(objectName);
+			var object:ICitrusObject = _state.getObjectByName(objectName);
 			
 			if (!object)
 			{

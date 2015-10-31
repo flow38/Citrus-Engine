@@ -1,7 +1,7 @@
 package citrus.view
 {
 	/**
-	 * The ISpriteView interface provides a common interface between a CitrusObject and the SpriteView view manager.
+	 * The ISpriteView interface provides a common interface between a ICitrusObject and the SpriteView view manager.
 	 * All objects that need to have graphical representations on screen need to implement this, if your
 	 * objects are in a state that uses the CitrusView as its view (most common). Often, especially
 	 * when working with Box2D, game object units will be different than than view object units.
@@ -102,7 +102,7 @@ package citrus.view
 		function get touchable():Boolean;
 		
 		/**
-		 * This is where you specify what your graphical representation of your CitrusObject will be.
+		 * This is where you specify what your graphical representation of your ICitrusObject will be.
 		 * 
 		 * <p>You can specify your <code>view</code> value in multiple ways:</p>
 		 * 

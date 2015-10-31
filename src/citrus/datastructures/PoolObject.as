@@ -1,7 +1,7 @@
 package citrus.datastructures {
 
 	import citrus.core.citrus_internal;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.core.IState;
 	import citrus.view.ACitrusView;
 
@@ -125,7 +125,7 @@ package citrus.datastructures {
 
 		/** Get an object from the free list and returns the node holding it in its data property.
 		 * It will be reinitialize inside this function. You may need to cast it.
-		 * @param params It calls an <code>initialize</code> method. If the pool <code>_isCitrusObjectPool</code> is true, it calls the CitrusObject <code>initialize</code> method.
+		 * @param params It calls an <code>initialize</code> method. If the pool <code>_isCitrusObjectPool</code> is true, it calls the ICitrusObject <code>initialize</code> method.
 		 * @return A node holding the newly 'recycled' object
 		 */
 		public function get(params:Object = null):DoublyLinkedListNode {
@@ -353,7 +353,7 @@ package citrus.datastructures {
 		{
 			var node:DoublyLinkedListNode = head;
 			while (node) {
-				(node.data as CitrusObject).kill = true;
+				(node.data as ICitrusObject).kill = true;
 				node = node.next;
 			}
 		}

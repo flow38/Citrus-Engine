@@ -1,6 +1,6 @@
 package citrus.objects {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.view.ICitrusArt;
 
 	import flash.display.MovieClip;
@@ -8,7 +8,7 @@ package citrus.objects {
 	/**
 	 * An abstract template used by every physics object.
 	 */
-	public class APhysicsObject extends CitrusObject {
+	public class APhysicsObject extends ICitrusObject {
 		
 		protected var _view:* = MovieClip;
 		protected var _art:ICitrusArt;

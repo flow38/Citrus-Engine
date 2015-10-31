@@ -3,7 +3,7 @@ package citrus.input {
 	import citrus.core.CitrusEngine;
 	
 	/**
-	 * InputController is the parent of all the controllers classes. It provides the same helper that CitrusObject class : 
+	 * InputController is the parent of all the controllers classes. It provides the same helper that ICitrusObject class :
 	 * it can be initialized with a params object, which can be created via an object parser/factory. 
 	 */
 	public class InputController

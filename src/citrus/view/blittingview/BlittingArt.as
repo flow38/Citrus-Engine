@@ -36,7 +36,7 @@ package citrus.view.blittingview {
 		public var addIndex:Number = 0;
 		
 		/**
-		 * The CitrusObject associated with this art object.
+		 * The ICitrusObject associated with this art object.
 		 */
 		public var citrusObject:Object;
 		
@@ -50,7 +50,7 @@ package citrus.view.blittingview {
 		public var loader:Object;
 		
 		/**
-		 * This is the graphical representation of your CitrusObject when using the Blitting view. a BlittingArt object
+		 * This is the graphical representation of your ICitrusObject when using the Blitting view. a BlittingArt object
 		 * should contain one or more AnimationSequences. If your object is does not need to animate (such as a background),
 		 * you can simply pass in a class that creates your graphic. The class that you pass in must create a BitmapData object.
 		 * @param	defaultGraphic For objects without animation, you can pass in a single BitmapData class. Useful for creating

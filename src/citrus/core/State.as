@@ -66,11 +66,11 @@ package citrus.core {
 		}
 
 		/**
-		 * Call this method to add a CitrusObject to this state. All visible game objects and physics objects
+		 * Call this method to add a ICitrusObject to this state. All visible game objects and physics objects
 		 * will need to be created and added via this method so that they can be properly created, managed, updated, and destroyed. 
-		 * @return The CitrusObject that you passed in. Useful for linking commands together.
+		 * @return The ICitrusObject that you passed in. Useful for linking commands together.
 		 */
-		public function add(object:CitrusObject):CitrusObject {
+		public function add(object:ICitrusObject):ICitrusObject {
 			return _realState.add(object);
 		}
 
@@ -99,7 +99,7 @@ package citrus.core {
 		 * When you are ready to remove an object from getting updated, viewed, and generally being existent, call this method.
 		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
 		 */
-		public function remove(object:CitrusObject):void {
+		public function remove(object:ICitrusObject):void {
 			_realState.remove(object);
 		}
 		
@@ -113,16 +113,16 @@ package citrus.core {
 		 * - can break box2D if called directly or indirectly in a collision listener.
 		 * - effects unknown with nape.
 		 */
-		public function removeImmediately(object:CitrusObject):void {
+		public function removeImmediately(object:ICitrusObject):void {
 			_realState.removeImmediately(object);
 		}
 
 		/**
-		 * Gets a reference to a CitrusObject by passing that object's name in.
+		 * Gets a reference to a ICitrusObject by passing that object's name in.
 		 * Often the name property will be set via a level editor such as the Flash IDE. 
 		 * @param name The name property of the object you want to get a reference to.
 		 */
-		public function getObjectByName(name:String):CitrusObject {
+		public function getObjectByName(name:String):ICitrusObject {
 
 			return _realState.getObjectByName(name);
 		}
@@ -133,17 +133,17 @@ package citrus.core {
 		 * coins plus enemies that you've named exactly the same. Then you'd loop through the returned vector to change properties or whatever you want.
 		 * @param name The name property of the object you want to get a reference to.
 		 */
-		public function getObjectsByName(name:String):Vector.<CitrusObject> {
+		public function getObjectsByName(name:String):Vector.<ICitrusObject> {
 
 			return _realState.getObjectsByName(name);
 		}
 
 		/**
-		 * Returns the first instance of a CitrusObject that is of the class that you pass in. 
+		 * Returns the first instance of a ICitrusObject that is of the class that you pass in.
 		 * This is useful if you know that there is only one object of a certain time in your state (such as a "Hero").
 		 * @param type The class of the object you want to get a reference to.
 		 */
-		public function getFirstObjectByType(type:Class):CitrusObject {
+		public function getFirstObjectByType(type:Class):ICitrusObject {
 
 			return _realState.getFirstObjectByType(type);
 		}
@@ -154,7 +154,7 @@ package citrus.core {
 		 * of type "Coin" via this method. Then you'd loop through the returned array to add your listener to the coins' event.
 		 * @param type The class of the object you want to get a reference to.
 		 */
-		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
+		public function getObjectsByType(type:Class):Vector.<ICitrusObject> {
 
 			return _realState.getObjectsByType(type);
 		}
@@ -171,7 +171,7 @@ package citrus.core {
 		/**
 		 * Contains all the objects added to the State and not killed.
 		 */
-		public function get objects():Vector.<CitrusObject> {
+		public function get objects():Vector.<ICitrusObject> {
 			return _realState.objects;
 		}
 

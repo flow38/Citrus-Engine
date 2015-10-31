@@ -1,6 +1,6 @@
 package citrus.view.starlingview {
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.core.IState;
 	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.physics.APhysicsEngine;
@@ -51,10 +51,10 @@ package citrus.view.starlingview {
 	 * 
 	 * <ul>This class does the following things:
 	 * 
-	 * <li>Creates the appropriate graphic depending on your CitrusObject's view property (loader, sprite, or bitmap), and loads it if it is a non-embedded graphic.</li>
+	 * <li>Creates the appropriate graphic depending on your ICitrusObject's view property (loader, sprite, or bitmap), and loads it if it is a non-embedded graphic.</li>
 	 * <li>Aligns the graphic with the appropriate registration (topLeft or center).</li>
-	 * <li>Calls the MovieClip's appropriate frame label based on the CitrusObject's animation property.</li>
-	 * <li>Updates the graphic's properties to be in-synch with the CitrusObject's properties once per frame.</li></ul>
+	 * <li>Calls the MovieClip's appropriate frame label based on the ICitrusObject's animation property.</li>
+	 * <li>Updates the graphic's properties to be in-synch with the ICitrusObject's properties once per frame.</li></ul>
 	 * 
 	 * <p>These objects will be created by the Citrus Engine's StarlingView, so you should never make them yourself. When you use <code>view.getArt()</code> to gain access to your game's graphics
 	 * (for adding click events, for instance), you will get an instance of this object. It extends Sprite, so you can do all the expected stuff with it, 
@@ -110,7 +110,7 @@ package citrus.view.starlingview {
 			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
 				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");
 
-			this.name = (_citrusObject as CitrusObject).name;
+			this.name = (_citrusObject as ICitrusObject).name;
 
 			if (_loopAnimation["walk"] != true) {
 				_loopAnimation["walk"] = true;
@@ -353,7 +353,7 @@ package citrus.view.starlingview {
 					contentChanged = false;
 				
 				if(_content == null || contentChanged == false)
-					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
+					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided ICitrusObject " + citrusObject);
 				else
 				{
 					moveRegistrationPoint(_citrusObject.registration);
@@ -470,7 +470,7 @@ package citrus.view.starlingview {
 			if (!(evt.target.loader.content is flash.display.MovieClip ||
 				evt.target.loader.content is Bitmap))
 			{
-				throw new Error("StarlingArt: Loaded content for "+(_citrusObject as CitrusObject).name+" can only be a MovieClip or a Bitmap");
+				throw new Error("StarlingArt: Loaded content for "+(_citrusObject as ICitrusObject).name+" can only be a MovieClip or a Bitmap");
 			}
 			
 			if (_content && _content.parent)

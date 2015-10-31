@@ -2,7 +2,7 @@ package citrus.view.spriteview
 {
 
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.core.IState;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
@@ -35,10 +35,10 @@ package citrus.view.spriteview
 	 * then all your graphics will be an instance of this class. 
 	 * 
 	 * <ul>This class does the following things:
-	 * <li>Creates the appropriate graphic depending on your CitrusObject's view property (loader, sprite, or bitmap), and loads it if it is a non-embedded graphic.</li>
+	 * <li>Creates the appropriate graphic depending on your ICitrusObject's view property (loader, sprite, or bitmap), and loads it if it is a non-embedded graphic.</li>
 	 * <li>Aligns the graphic with the appropriate registration (topLeft or center).</li>
-	 * <li>Calls the MovieClip's appropriate frame label based on the CitrusObject's animation property.</li>
-	 * <li>Updates the graphic's properties to be in-synch with the CitrusObject's properties once per frame.</li></ul>
+	 * <li>Calls the MovieClip's appropriate frame label based on the ICitrusObject's animation property.</li>
+	 * <li>Updates the graphic's properties to be in-synch with the ICitrusObject's properties once per frame.</li></ul>
 	 * 
 	 * <p>These objects will be created by the Citrus Engine's SpriteView, so you should never make them yourself. When you use <code>view.getArt()</code> to gain access to your game's graphics
 	 * (for adding click events, for instance), you will get an instance of this object. It extends Sprite, so you can do all the expected stuff with it, 
@@ -83,7 +83,7 @@ package citrus.view.spriteview
 			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
 				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");
 			
-			this.name = (_citrusObject as CitrusObject).name;
+			this.name = (_citrusObject as ICitrusObject).name;
 			
 			if (_loopAnimation["walk"] != true) {
 				_loopAnimation["walk"] = true;
@@ -232,7 +232,7 @@ package citrus.view.spriteview
 					WorldClock.clock.add(_view);
 				}
 				else
-					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
+					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided ICitrusObject " + citrusObject);
 				
 				
 				// Call the initialize function if it exists on the custom art class.

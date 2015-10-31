@@ -1,6 +1,6 @@
 package citrus.objects.common {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.math.MathVector;
 	
 	/**
@@ -8,7 +8,7 @@ package citrus.objects.common {
 	 * Don't call the State's add method on this object, because you don't want to create a graphic object neither than calling 
 	 * an no needed update method. Also don't forget to call yourself the destroy method!
 	 */
-    public class Path extends CitrusObject
+    public class Path extends ICitrusObject
     {
         private var _nodes:Vector.<MathVector>;
 

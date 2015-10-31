@@ -1,6 +1,6 @@
 package citrus.view {
 
-	import citrus.core.CitrusObject;
+	import citrus.core.ICitrusObject;
 	import citrus.utils.LoadManager;
 
 	import flash.utils.Dictionary;
@@ -64,7 +64,7 @@ package citrus.view {
 		}
 		
 		/**
-		 * The active state automatically calls this method whenever a new CitrusObject is added to it. It uses the CitrusObject
+		 * The active state automatically calls this method whenever a new ICitrusObject is added to it. It uses the ICitrusObject
 		 * to create the appropriate graphical representation. It also tells the LoadManager to begin listening to Loader events
 		 * on the graphics object.
 		 */		
@@ -79,12 +79,12 @@ package citrus.view {
 				_viewObjects[citrusObject] = art;
 			
 			if (art["content"] == null)
-				loadManager.add(art, citrusObject as CitrusObject);
+				loadManager.add(art, citrusObject as ICitrusObject);
 			
 		}
 		
 		/**
-		 * This is called by the active state whenever a CitrusObject is removed from the state, effectively also removing the
+		 * This is called by the active state whenever a ICitrusObject is removed from the state, effectively also removing the
 		 * art representation. 
 		 */		
 		public function removeArt(citrusObject:Object):void
@@ -97,11 +97,11 @@ package citrus.view {
 		}
 		
 		/**
-		 * Gets the graphical representation of a CitrusObject that is being managed by the active state's view.
-		 * This is the method that you will want to call to get the art for a CitrusObject.
+		 * Gets the graphical representation of a ICitrusObject that is being managed by the active state's view.
+		 * This is the method that you will want to call to get the art for a ICitrusObject.
 		 * 
 		 * <p>For instance, if you want to perform an action when the user clicks an object, you will want to call
-		 * this method to get the MovieClip that is associated with the CitrusObject that you are listening for a click upon.
+		 * this method to get the MovieClip that is associated with the ICitrusObject that you are listening for a click upon.
 		 * </p>
 		 */		
 		public function getArt(citrusObject:Object):Object
@@ -113,10 +113,10 @@ package citrus.view {
 		}
 		
 		/**
-		 * Gets a reference to the CitrusObject associated with the provided art object.
-		 * This is useful for instances such as when you need to get the CitrusObject for a graphic that got clicked on or otherwise interacted with.
-		 * @param art The graphical object that represents the CitrusObject you want.
-		 * @return The CitrusObject associated with the provided art object.
+		 * Gets a reference to the ICitrusObject associated with the provided art object.
+		 * This is useful for instances such as when you need to get the ICitrusObject for a graphic that got clicked on or otherwise interacted with.
+		 * @param art The graphical object that represents the ICitrusObject you want.
+		 * @return The ICitrusObject associated with the provided art object.
 		 */
 		public function getObjectFromArt(art:Object):Object
 		{
@@ -129,7 +129,7 @@ package citrus.view {
 		}
 		
 		/**
-		 * A CitrusView subclass will extend this method to provide specifics on how to create the graphical representation of a CitrusObject.
+		 * A CitrusView subclass will extend this method to provide specifics on how to create the graphical representation of a ICitrusObject.
 		 * @param citrusObject The object for which to create the art.
 		 * @return The art object.
 		 * 
@@ -140,9 +140,9 @@ package citrus.view {
 		}
 		
 		/**
-		 * A CitrusView subclass will extend this method to update the graphical representation for each CitrusObject.
-		 * @param citrusObject A CitrusObject whose graphical counterpart needs to be updated.
-		 * @param art The graphics object that will be updated based on the provided CitrusObject.
+		 * A CitrusView subclass will extend this method to update the graphical representation for each ICitrusObject.
+		 * @param citrusObject A ICitrusObject whose graphical counterpart needs to be updated.
+		 * @param art The graphics object that will be updated based on the provided ICitrusObject.
 		 */		
 		protected function updateArt(citrusObject:Object, art:Object):void
 		{
@@ -150,7 +150,7 @@ package citrus.view {
 		}
 		
 		/**
-		 * A CitrusView subclass will extend this method to destroy the art associated with the provided CitrusObject. 
+		 * A CitrusView subclass will extend this method to destroy the art associated with the provided ICitrusObject.
 		 */		
 		protected function destroyArt(citrusObject:Object):void
 		{
