@@ -1,14 +1,16 @@
 package citrus.system {
 
 	import citrus.core.CitrusObject;
+	import citrus.system.IComposite;
+	import citrus.system.AComponent;
 
 	/**
 	 * A game entity is compound by components. The entity serves as a link to communicate between components.
 	 * It extends the CitrusObject class to enjoy its params setter.
 	 */
-	public class Entity extends CitrusObject {
+	public class Entity extends AComponent implements IComposite{
 
-		protected var _components:Vector.<Component>;
+		protected var _components:Vector.<IComponent>;
 
 		public function Entity(name:String, params:Object = null) {
 			
@@ -21,20 +23,20 @@ package citrus.system {
 			
 			super(name, params);
 
-			_components = new Vector.<Component>();
+			_components = new Vector.<IComponent>();
 		}
 		
 		/**
 		 * Add a component to the entity.
 		 */
-		public function add(component:Component):Entity {
+		public function add(component:IComponent):IComposite {
 			
 			doAddComponent(component);
 			
 			return this;
 		}
 		
-		protected function doAddComponent(component:Component):Boolean
+		protected function doAddComponent(component:IComponent):Boolean
 		{
 			if(component.name == "")
 			{
@@ -44,19 +46,19 @@ package citrus.system {
 			if(lookupComponentByName(component.name))
 				throw Error("A component with name '" + component.name + "' already exists on this entity.");
  
-			if(component.entity)
+			if(component.parent)
 			{
-				if(component.entity == this)
+				if(component.parent == this)
 				{
 					trace("Component with name '" + component.name + "' already has entity ('" + this.name + "') defined. Manually defining components is no longer needed");
 					_components.push(component);
 					return true;
 				}
  
-				throw Error("The component '" + component.name + "' already has an owner. ('" + component.entity.name + "')");
+				throw Error("The component '" + component.name + "' already has an owner. ('" + component.parent.name + "')");
 			}
  
-			component.entity = this;
+			component.parent = this;
 			_components.push(component);
 			return true;
 		}
@@ -64,7 +66,7 @@ package citrus.system {
 		/**
 		 * Remove a component from the entity.
 		 */
-		public function remove(component:Component):void {
+		public function remove(component:IComponent):void {
 			
 			var indexOfComponent:int = _components.indexOf(component);
 			if (indexOfComponent != -1)
@@ -77,10 +79,10 @@ package citrus.system {
 		 * @param 	componentType  Component instance class we're looking for
 		 * @return 	Component
 		 */
-		public function lookupComponentByType(componentType:Class):Component
+		public function lookupComponentByType(componentType:Class):IComponent
 		{
-			var component:Component = null;
-			var filteredComponents:Vector.<Component> = _components.filter(function(item:Component, index:int, vector:Vector.<Component>):Boolean{
+			var component:IComponent = null;
+			var filteredComponents:Vector.<IComponent> = _components.filter(function(item:IComponent, index:int, vector:Vector.<IComponent>):Boolean{
 				return item is componentType;
 			});
  
@@ -96,9 +98,9 @@ package citrus.system {
 		 *
 		 * @param 	componentType  Component instance class we're looking for
 		 */
-		public function lookupComponentsByType(componentType:Class):Vector.<Component>
+		public function lookupComponentsByType(componentType:Class):Vector.<IComponent>
 		{
-			var filteredComponents : Vector.<Component> = _components.filter(function(item:Component, index:int, vector:Vector.<Component>):Boolean{
+			var filteredComponents : Vector.<IComponent> = _components.filter(function(item:IComponent, index:int, vector:Vector.<IComponent>):Boolean{
 				return item is componentType;
 			});
  
@@ -111,10 +113,10 @@ package citrus.system {
 		 * @param 	name Component's name we're looking for
 		 * @return 	Component
 		 */
-		public function lookupComponentByName(name:String):Component
+		public function lookupComponentByName(name:String):IComponent
 		{
-			var component : Component = null;
-			var filteredComponents : Vector.<Component> = _components.filter(function(item:Component, index:int, vector:Vector.<Component>):Boolean{
+			var component : IComponent = null;
+			var filteredComponents : Vector.<IComponent> = _components.filter(function(item:IComponent, index:int, vector:Vector.<IComponent>):Boolean{
 				return item.name == name;
 			});
  
@@ -135,7 +137,7 @@ package citrus.system {
 			
 			super.initialize();
 			
-			_components.forEach(function(item:Component, index:int, vector:Vector.<Component>):void{
+			_components.forEach(function(item:IComponent, index:int, vector:Vector.<IComponent>):void{
 				item.initialize();
 			});
 		}
@@ -147,7 +149,7 @@ package citrus.system {
 		 */
 		override public function destroy():void {
 			
-			_components.forEach(function(item : Component, index:int, vector:Vector.<Component>):void{
+			_components.forEach(function(item : IComponent, index:int, vector:Vector.<IComponent>):void{
 				item.destroy();
 			});
 			_components = null;
@@ -162,14 +164,15 @@ package citrus.system {
 		 */
 		override public function update(timeDelta:Number):void {
 			
-			_components.forEach(function(item : Component, index:int, vector:Vector.<Component>):void{
+			_components.forEach(function(item : IComponent, index:int, vector:Vector.<IComponent>):void{
 				item.update(timeDelta);
 			},this);
 		}
 		
-		public function get components():Vector.<Component>
+		public function get components():Vector.<IComponent>
 		{
 			return _components;
 		}
-	}
+
+    }
 }

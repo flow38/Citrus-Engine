@@ -1,6 +1,8 @@
 package citrus.system {
 
 	import citrus.core.CitrusObject;
+	import citrus.system.IComposite;
+	import citrus.system.AComponent;
 
 	/**
 	 * A component is an object dedicate to a (single) task for an entity : physics, collision, inputs, view, movement... management.
@@ -8,9 +10,7 @@ package citrus.system {
 	 * Preferably if you use a physics engine, create at first the entity's physics component.
 	 * It extends the CitrusObject class to enjoy its params setter.
 	 */
-	public class Component extends CitrusObject {
-		
-		public var entity:Entity;
+	public class Component extends AComponent {
 
 		public function Component(name:String, params:Object = null) {
 			
@@ -46,6 +46,5 @@ package citrus.system {
 			
 			super.update(timeDelta);
 		}
-
-	}
+    }
 }
