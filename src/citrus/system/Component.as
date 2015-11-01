@@ -1,9 +1,5 @@
 package citrus.system {
 
-	import citrus.core.CitrusObject;
-	import citrus.system.IComposite;
-	import citrus.system.AComponent;
-
 	/**
 	 * A component is an object dedicate to a (single) task for an entity : physics, collision, inputs, view, movement... management.
 	 * You will use an entity when your object become too much complex to manage into a single class.

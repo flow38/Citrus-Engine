@@ -6,13 +6,10 @@ package citrus.core.starling {
 	import citrus.core.MediatorState;
 	import citrus.datastructures.PoolObject;
 	import citrus.input.Input;
-	import citrus.system.Entity;
-	import citrus.system.components.ViewComponent;
+	import citrus.system.IEntity;
 	import citrus.view.ACitrusView;
 	import citrus.view.starlingview.StarlingCamera;
 	import citrus.view.starlingview.StarlingView;
-
-	import starling.display.Sprite;
 
 	/**
 	 * StarlingState class is just a wrapper for the AState class. It's important to notice it extends Starling Sprite.
@@ -86,7 +83,7 @@ package citrus.core.starling {
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
 		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
-		public function addEntity(entity:Entity):Entity {
+		public function addEntity(entity:IEntity):IEntity {
 
 			return _realState.addEntity(entity);
 		}

@@ -1,14 +1,20 @@
 package citrus.system {
 
-	import citrus.core.CitrusObject;
-	import citrus.system.IComposite;
-	import citrus.system.AComponent;
+    import citrus.view.ISpriteView;
 
-	/**
+    /**
 	 * A game entity is compound by components. The entity serves as a link to communicate between components.
 	 * It extends the CitrusObject class to enjoy its params setter.
+	 *
+	 * Entity implements IEntity and therefor can be composed by IComponent AND IEntity.
+	 *
+	 * Entity is responsible for calling to all its components the basic game loop method as initialize, update,
+	 * destroy ...
+	 *
+	 * State instance only store (via its objects property) a reference to the entity and not to its components. But
+	 * State 's view store a reference to all components and sub components implementing ISpriteView interface.
 	 */
-	public class Entity extends AComponent implements IComposite{
+	public class Entity extends AComponent implements IEntity{
 
 		protected var _components:Vector.<IComponent>;
 
@@ -25,11 +31,8 @@ package citrus.system {
 
 			_components = new Vector.<IComponent>();
 		}
-		
-		/**
-		 * Add a component to the entity.
-		 */
-		public function add(component:IComponent):IComposite {
+
+    	public function add(component:IComponent):IEntity {
 			
 			doAddComponent(component);
 			
@@ -62,23 +65,14 @@ package citrus.system {
 			_components.push(component);
 			return true;
 		}
-		
-		/**
-		 * Remove a component from the entity.
-		 */
+
 		public function remove(component:IComponent):void {
 			
 			var indexOfComponent:int = _components.indexOf(component);
 			if (indexOfComponent != -1)
 				_components.splice(indexOfComponent,1)[0].destroy();
 		}
-		
-		/**
-		 * Search and return first componentType's instance found in components
-		 *
-		 * @param 	componentType  Component instance class we're looking for
-		 * @return 	Component
-		 */
+
 		public function lookupComponentByType(componentType:Class):IComponent
 		{
 			var component:IComponent = null;
@@ -92,12 +86,7 @@ package citrus.system {
  
 			return component;
 		}
-		
-		/**
-		 * Search and return all componentType's instance found in components
-		 *
-		 * @param 	componentType  Component instance class we're looking for
-		 */
+
 		public function lookupComponentsByType(componentType:Class):Vector.<IComponent>
 		{
 			var filteredComponents : Vector.<IComponent> = _components.filter(function(item:IComponent, index:int, vector:Vector.<IComponent>):Boolean{
@@ -106,13 +95,7 @@ package citrus.system {
  
 			return filteredComponents;
 		}
-		
-		/**
-		 * Search and return a component using its name
-		 *
-		 * @param 	name Component's name we're looking for
-		 * @return 	Component
-		 */
+
 		public function lookupComponentByName(name:String):IComponent
 		{
 			var component : IComponent = null;
@@ -125,6 +108,21 @@ package citrus.system {
 			}
  
 			return component;
+		}
+
+
+		public function getViews():Vector.<ISpriteView> {
+			var views : Vector.<ISpriteView> = new Vector.<ISpriteView>();
+
+			for each (var component:IComponent in _components) {
+				if (component is ISpriteView) {
+					views.push(component);
+				}else if (component is IEntity) {
+					views.concat(IEntity(component).getViews());
+				}
+			}
+
+			return views;
 		}
 		
 		/**

@@ -3,12 +3,10 @@
  */
 package citrus.system {
     import citrus.core.CitrusObject;
-    import citrus.system.IComponent;
-    import citrus.system.IComposite;
 
     public class AComponent extends CitrusObject implements IComponent {
 
-        private var _parent:IComposite;
+        private var _parent:IEntity;
 
         public function AComponent(name:String, params:Object = null)
         {
@@ -19,12 +17,12 @@ package citrus.system {
                 throw new Error("AComponent class is abstract, you must instanciate some of its concrete implementations, aka Component or Entity class.");
         }
 
-        public function get parent():IComposite
+        public function get parent():IEntity
         {
             return _parent;
         }
 
-        public function set parent(value:IComposite):void
+        public function set parent(value:IEntity):void
         {
             _parent = value;
         }

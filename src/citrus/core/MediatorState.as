@@ -1,14 +1,15 @@
 package citrus.core {
 
-	import citrus.physics.APhysicsEngine;
-	import citrus.datastructures.PoolObject;
-	import citrus.objects.APhysicsObject;
-	import citrus.system.Component;
-	import citrus.system.Entity;
-	import citrus.system.components.ViewComponent;
-	import citrus.view.ACitrusView;
+    import citrus.datastructures.PoolObject;
+    import citrus.objects.APhysicsObject;
+    import citrus.physics.APhysicsEngine;
+    import citrus.system.IComponent;
+    import citrus.system.IEntity;
+    import citrus.system.components.ViewComponent;
+    import citrus.view.ACitrusView;
+    import citrus.view.ISpriteView;
 
-	/**
+    /**
 	 * The MediatorState class is very important. It usually contains the logic for a particular state the game is in.
 	 * You should never instanciate/extend this class by your own. It's used via a wrapper: State or StarlingState or Away3DState.
 	 * There can only ever be one state running at a time. You should extend the State class
@@ -111,8 +112,8 @@ package citrus.core {
 		 */
 		public function add(object:ICitrusObject):ICitrusObject {
 			
-			if (object is Entity)
-				throw new Error("Object named: " + object.name + " is an entity and should be added to the state via addEntity method.");
+			if (object is IEntity)
+				throw new Error("Object named: " + object.name + " is an IEntity and should be added to the state via addEntity method.");
 			
 			for each (var objectAdded:ICitrusObject in objects)
 				if (object == objectAdded)
@@ -136,20 +137,18 @@ package citrus.core {
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
 		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
-		public function addEntity(entity:Entity):Entity {
+		public function addEntity(entity:IEntity):IEntity {
 			
 			for each (var objectAdded:ICitrusObject in objects)
 				if (entity == objectAdded)
 					throw new Error(entity.name + " is already added to the state.");
 			
 			_objects.push(entity);
-			
-			var views:Vector.<Component> = entity.lookupComponentsByType(ViewComponent);
-			if (views.length > 0)
-				for each(var view:ViewComponent in views)
-				{
-					_view.addArt(view);
-				}
+
+			//We add all ISpriteView objects contains in macro entity to state's view
+			entity.getViews().forEach(function(viewComponent : ISpriteView, index:int, vector:Vector.<ISpriteView>):void {
+				view.addArt(viewComponent);
+			}, this);
 					
 			return entity;
 		}
@@ -193,12 +192,13 @@ package citrus.core {
 			object.kill = true;
 			_objects.splice(i, 1);
 
-			if (object is Entity) {
-				var views:Vector.<Component> = (object as Entity).lookupComponentsByType(ViewComponent);
-				
-				if (views.length > 0)
-					for each(var view:ViewComponent in views)
-						_view.removeArt(view);
+			if (object is IEntity) {
+				var views:Vector.<IComponent> = (object as IEntity).lookupComponentsByType(ViewComponent);
+
+				views.forEach(function(view:IComponent, index:int, vector:Vector.<IComponent>):void{
+					_view.removeArt(view);
+				});
+
 						
 			} else
 				_view.removeArt(object);

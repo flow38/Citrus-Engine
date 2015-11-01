@@ -1,8 +1,8 @@
 package citrus.core {
 
-	import citrus.system.Entity;
+	import citrus.system.IEntity;
 	import citrus.view.ACitrusView;
-	
+
 	/**
 	 * Take a look on the 2 respective states to have some information on the functions.
 	 */
@@ -18,7 +18,7 @@ package citrus.core {
 		
 		function add(object:ICitrusObject):ICitrusObject;
 		
-		function addEntity(entity:Entity):Entity;
+		function addEntity(entity:IEntity):IEntity;
 		
 		function remove(object:ICitrusObject):void;
 		

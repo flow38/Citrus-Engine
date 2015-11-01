@@ -3,20 +3,19 @@
  */
 package citrus.system {
     import citrus.core.ICitrusObject;
-    import citrus.system.IComposite;
 
     public interface IComponent extends ICitrusObject {
 
         /**
          * Get IComponent's parent if exist one
          */
-        function get parent():IComposite;
+        function get parent():IEntity;
 
         /**
          * Set IComponent's parent
          * @param value
          */
-        function set parent(value:IComposite):void;
+        function set parent(value:IEntity):void;
 
     }
 }
