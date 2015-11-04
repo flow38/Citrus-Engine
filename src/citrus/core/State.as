@@ -25,7 +25,6 @@ package citrus.core {
 		public function State() {
 			
 			_ce = CitrusEngine.getInstance();
-
 			_realState = new MediatorState(this);
 		}
 
@@ -180,5 +179,7 @@ package citrus.core {
 		protected function createView():ACitrusView {
 			return new SpriteView(this);
 		}
-	}
+
+
+    }
 }
