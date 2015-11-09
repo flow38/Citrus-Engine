@@ -17,30 +17,5 @@ package citrus.system {
 			
 			super(name, params);
 		}
-		
-		/**
-		 * Register other components in your component class in this function.
-		 * It should be call after all components have been added to an entity.
-		 */
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize();
-		}
-		
-		/**
-		 * Destroy the component, most of the time called by its entity.
-		 */
-		override public function destroy():void {
-			
-			super.destroy();
-		}
-		
-		/**
-		 * Perform an update on the component, called by its entity.
-		 */
-		override public function update(timeDelta:Number):void {
-			
-			super.update(timeDelta);
-		}
     }
 }

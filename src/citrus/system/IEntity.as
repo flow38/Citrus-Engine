@@ -2,9 +2,9 @@
  * Created by Florent on 31/10/2015.
  */
 package citrus.system {
-    import citrus.view.ISpriteView;
+import citrus.view.ISpriteView;
 
-    public interface IEntity extends IComponent{
+public interface IEntity extends IComponent{
 
         /**
          * Add a child component to the IEntity.

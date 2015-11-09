@@ -8,6 +8,23 @@ package citrus.core {
      */
     public interface ICitrusObject {
 
+        function get ID() : uint;
+
+        function get name() : String;
+
+        function set name(value : String) : void;
+
+        function get kill() : Boolean;
+
+        function set kill(value : Boolean) : void;
+
+        function get updateCallEnabled() : Boolean;
+
+        function set updateCallEnabled(value : Boolean) : void;
+
+        function get type() : String;
+
+        function set type(value : String) : void;
 
         /**
          * Call in the constructor if the Object is added via the State and the add method.
@@ -30,24 +47,6 @@ package citrus.core {
          */
         function update(timeDelta:Number):void;
 
-        function get ID():uint;
-
         function toString():String;
-
-        function get name():String;
-
-        function set name(value:String):void;
-
-        function get kill():Boolean;
-
-        function set kill(value:Boolean):void;
-
-        function get updateCallEnabled():Boolean;
-
-        function set updateCallEnabled(value:Boolean):void;
-
-        function get type():String;
-
-        function set type(value:String):void;
     }
 }

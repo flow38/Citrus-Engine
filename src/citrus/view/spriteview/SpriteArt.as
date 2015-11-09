@@ -1,36 +1,34 @@
 package citrus.view.spriteview 
 {
 
-	import citrus.core.CitrusEngine;
-	import citrus.core.ICitrusObject;
-	import citrus.core.IState;
-	import citrus.physics.APhysicsEngine;
-	import citrus.physics.IDebugView;
-	import citrus.system.components.ViewComponent;
-	import citrus.view.ACitrusCamera;
-	import citrus.view.ACitrusView;
-	import citrus.view.ICitrusArt;
-	import citrus.view.ISpriteView;
-	import flash.utils.Dictionary;
-	import org.osflash.signals.Signal;
+import citrus.core.CitrusEngine;
+import citrus.core.ICitrusObject;
+import citrus.core.IState;
+import citrus.physics.APhysicsEngine;
+import citrus.physics.IDebugView;
+import citrus.system.components.ViewComponent;
+import citrus.view.ACitrusCamera;
+import citrus.view.ACitrusView;
+import citrus.view.ICitrusArt;
+import citrus.view.ISpriteView;
 
-	import dragonBones.Armature;
-	import dragonBones.animation.WorldClock;
+import dragonBones.Armature;
+import dragonBones.animation.WorldClock;
 
-	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
-	import flash.display.FrameLabel;
-	import flash.display.Loader;
-	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.utils.getDefinitionByName;
+import flash.display.Bitmap;
+import flash.display.DisplayObject;
+import flash.display.Loader;
+import flash.display.MovieClip;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.IOErrorEvent;
+import flash.net.URLRequest;
+import flash.system.ApplicationDomain;
+import flash.system.LoaderContext;
+import flash.utils.Dictionary;
+import flash.utils.getDefinitionByName;
 
-	/**
+/**
 	 * This is the class that all art objects use for the SpriteView state view. If you are using the SpriteView (as opposed to the blitting view, for instance),
 	 * then all your graphics will be an instance of this class. 
 	 * 
@@ -48,47 +46,7 @@ package citrus.view.spriteview
 	public class SpriteArt extends Sprite implements ICitrusArt
 	{
 		// The reference to your art via the view.
-		private var _content:DisplayObject;
-		
-		/**
-		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
-		 * property is assigned to loader.content.
-		 */
-		public var loader:Loader;
-		
 		private static var _loopAnimation:Dictionary = new Dictionary();
-		
-		private var _updateArtEnabled:Boolean = true;
-		private var _citrusObject:ISpriteView;
-		private var _physicsComponent:*;
-		private var _registration:String;
-		private var _view:*;
-		private var _animation:String;
-		public var group:uint;
-		
-		public function SpriteArt(object:ISpriteView = null) 
-		{
-			if (object)
-				initialize(object);
-		}
-		
-		public function initialize(object:ISpriteView):void {
-			
-			_citrusObject = object;
-			
-			CitrusEngine.getInstance().onPlayingChange.add(_pauseAnimation);
-			
-			var ceState:IState = CitrusEngine.getInstance().state;
-			
-			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
-				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");
-			
-			this.name = (_citrusObject as ICitrusObject).name;
-			
-			if (_loopAnimation["walk"] != true) {
-				_loopAnimation["walk"] = true;
-			}
-		}
 		
 		/**
 		 * Add a loop animation to the Dictionnary.
@@ -100,8 +58,24 @@ package citrus.view.spriteview
 				_loopAnimation[animation] = true;
 			}
 		}
-		
+
+	public function SpriteArt(object : ISpriteView = null)
+	{
+		if (object) {
+			initialize(object);
+		}
+	}
 		/**
+		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
+		 * property is assigned to loader.content.
+		 */
+		public var loader : Loader;
+	public var group : uint;
+	private var _physicsComponent : *;
+
+	private var _content : DisplayObject;
+
+	/**
 		 * The content property is the actual display object that your game object is using. For graphics that are loaded at runtime
 		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
 		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
@@ -109,54 +83,47 @@ package citrus.view.spriteview
 		public function get content():DisplayObject {
 			return _content;
 		}
-		
-		public function destroy(viewChanged:Boolean = false):void {
-			
-			if (viewChanged) {
-				if (_content is AnimationSequence)
-					(_content as AnimationSequence).destroy();
-				if (_content && _content.parent)
-					removeChild(_content);
-			} else {
-				
-				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
-				
-				if (_view is Armature) {
-					
-					WorldClock.clock.remove(_view);
-					(_view as Armature).dispose();					
-				}
-				
-				_view = null;
-			}
+
+	private var _updateArtEnabled : Boolean = true;
+
+	public function get updateArtEnabled() : Boolean
+	{
+		return _updateArtEnabled;
+	}
+
+	/**
+	 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+	 */
+	public function set updateArtEnabled(value : Boolean) : void
+	{
+		_updateArtEnabled = value;
 		}
-		
-		public function moveRegistrationPoint(registrationPoint:String):void {
-			
-			if (registrationPoint == "topLeft") {
-				_content.x = 0;
-				_content.y = 0;
-			} else if (registrationPoint == "center") {
-				_content.x = -_content.width / 2;
-				_content.y = -_content.height / 2;
-			}
-			
+
+	private var _citrusObject : ISpriteView;
+
+	public function get citrusObject() : ISpriteView
+	{
+		return _citrusObject;
 		}
+
+	private var _registration : String;
 		
 		public function get registration():String
 		{
 			return _registration;
 		}
-		
-		public function set registration(value:String):void 
+
+	public function set registration(value : String) : void
 		{
 			if (_registration == value || !_content)
 				return;
-				
+
 			_registration = value;
-			
+
 			moveRegistrationPoint(_registration);
 		}
+
+	private var _view : *;
 		
 		public function get view():*
 		{
@@ -167,20 +134,19 @@ package citrus.view.spriteview
 		{
 			if (_view == value)
 				return;
-				
+
 			if (_content && _content.parent)
 			{
 				_citrusObject.handleArtChanged(this as ICitrusArt);
 				destroy(true);
 				_content = null;
 			}
-			
+
 			_view = value;
-			
-			if (_view)
-			{				
+
+			if (_view) {
 				var tmpObj:* ;
-				
+
 				if (_view is String)
 				{
 					// view property is a path to an image?
@@ -225,42 +191,31 @@ package citrus.view.spriteview
 				{
 					// view property is a Display Object reference
 					_content = _view;
-					
+
 				} else if (_view is Armature) {
-					
+
 					_content = (_view as Armature).display as Sprite;
 					WorldClock.clock.add(_view);
 				}
 				else
 					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided ICitrusObject " + citrusObject);
-				
-				
+
+
 				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
-					
+
 				if (_content)
 				{
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 					_citrusObject.handleArtReady(this as ICitrusArt);
 				}
-					
+
 			}
 		}
-		
-		/**
-		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
-		 */
-		public function set updateArtEnabled(value:Boolean):void
-		{
-			_updateArtEnabled = value;
-		}
-		
-		public function get updateArtEnabled():Boolean
-		{
-			return _updateArtEnabled;
-		}
+
+	private var _animation : String;
 		
 		public function get animation():String
 		{
@@ -271,20 +226,72 @@ package citrus.view.spriteview
 		{
 			if (_animation == value)
 				return;
-			
+
 			_animation = value;
-			
+
 			var animLoop:Boolean = _loopAnimation[_animation];
-			
+
 			if (_content is AnimationSequence)
 				(_content as AnimationSequence).changeAnimation(_animation, animLoop);
 			else if (_view is Armature)
 				(_view as Armature).animation.gotoAndPlay(value, -1, -1, animLoop ? 0 : 1);
 		}
-		
-		public function get citrusObject():ISpriteView
-		{
-			return _citrusObject;
+
+	public function initialize(object : ISpriteView) : void
+	{
+
+		_citrusObject = object;
+
+		CitrusEngine.getInstance().onPlayingChange.add(_pauseAnimation);
+
+		var ceState : IState = CitrusEngine.getInstance().state;
+
+		if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine) {
+			_physicsComponent = (_citrusObject as ViewComponent).parent.lookupComponentByName("physics");
+		}
+
+		this.name = (_citrusObject as ICitrusObject).name;
+
+		if (_loopAnimation["walk"] != true) {
+			_loopAnimation["walk"] = true;
+		}
+	}
+
+	public function destroy(viewChanged : Boolean = false) : void
+	{
+
+		if (viewChanged) {
+			if (_content is AnimationSequence) {
+				(_content as AnimationSequence).destroy();
+			}
+			if (_content && _content.parent) {
+				removeChild(_content);
+			}
+		} else {
+
+			CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
+
+			if (_view is Armature) {
+
+				WorldClock.clock.remove(_view);
+				(_view as Armature).dispose();
+			}
+
+			_view = null;
+		}
+	}
+
+	public function moveRegistrationPoint(registrationPoint : String) : void
+	{
+
+		if (registrationPoint == "topLeft") {
+			_content.x = 0;
+			_content.y = 0;
+		} else if (registrationPoint == "center") {
+			_content.x = -_content.width / 2;
+			_content.y = -_content.height / 2;
+		}
+
 		}
 		
 		public function update(stateView:ACitrusView):void

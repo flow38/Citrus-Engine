@@ -1,120 +1,42 @@
 package citrus.system.components.box2d {
 
-	import Box2D.Collision.Shapes.b2CircleShape;
-	import Box2D.Collision.Shapes.b2PolygonShape;
-	import Box2D.Collision.Shapes.b2Shape;
-	import Box2D.Collision.b2Manifold;
-	import Box2D.Common.Math.b2Mat22;
-	import Box2D.Common.Math.b2Transform;
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.b2Body;
-	import Box2D.Dynamics.b2BodyDef;
-	import Box2D.Dynamics.b2ContactImpulse;
-	import Box2D.Dynamics.b2Fixture;
-	import Box2D.Dynamics.b2FixtureDef;
+import citrus.core.CitrusEngine;
+import citrus.physics.PhysicsCollisionCategories;
+import citrus.physics.box2d.Box2D;
+import citrus.physics.box2d.IBox2DPhysicsObject;
+import citrus.system.Component;
 
-	import citrus.core.CitrusEngine;
-	import citrus.physics.PhysicsCollisionCategories;
-	import citrus.physics.box2d.Box2D;
-	import citrus.physics.box2d.IBox2DPhysicsObject;
-	import citrus.system.Component;
-
-	/**
-	 * The base's physics Box2D Component. Manage (just) the physics creation.
+/**
+ * The base's physics Box2D MelonComponent. Manage (just) the physics creation.
 	 */
 	public class Box2DComponent extends Component implements IBox2DPhysicsObject {
-		
+
+	public function Box2DComponent(name : String, params : Object = null)
+	{
+
+		_box2D = CitrusEngine.getInstance().state.getFirstObjectByType(Box2D) as Box2D;
+
+		super(name, params);
+	}
 		protected var _collisionComponent:CollisionComponent;
-		
 		protected var _box2D:Box2D;
 		protected var _bodyDef:b2BodyDef;
-		protected var _body:b2Body;
 		protected var _shape:b2Shape;
 		protected var _fixtureDef:b2FixtureDef;
 		protected var _fixture:b2Fixture;
-		
-		protected var _x:Number = 0;
-		protected var _y:Number = 0;
-		protected var _rotation:Number = 0;
-		protected var _width:Number = 1;
-		protected var _height:Number = 1;
-		protected var _radius:Number = 0;
-		
-		protected var _beginContactCallEnabled:Boolean = false;
-		protected var _endContactCallEnabled:Boolean = false;
-		protected var _preContactCallEnabled:Boolean = false;
-		protected var _postContactCallEnabled:Boolean = false;
 
-		public function Box2DComponent(name:String, params:Object = null) {
-			
-			_box2D = CitrusEngine.getInstance().state.getFirstObjectByType(Box2D) as Box2D;
-			
-			super(name, params);
-		}
-		
+	protected var _body : b2Body;
+
 		/**
-		 * handled by collision component
+		 * A direction reference to the Box2D body associated with this object.
 		 */
-		public function handleBeginContact(contact:b2Contact):void {
-			_collisionComponent.handleBeginContact(contact);
+		public function get body() : b2Body
+		{
+			return _body;
 		}
-		
-		/**
-		 * handled by collision component
-		 */
-		public function handleEndContact(contact:b2Contact):void {
-			_collisionComponent.handleEndContact(contact);
-		}
-		
-		/**
-		 * handled by collision component
-		 */
-		public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
-			_collisionComponent.handlePreSolve(contact, oldManifold);
-		}
-		
-		/**
-		 * handled by collision component
-		 */
-		public function handlePostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
-			_collisionComponent.handlePostSolve(contact, impulse);
-		}
-		
-		/**
-		 * This method doesn't depend of your application enter frame. Ideally, the time between two calls never change. 
-		 * In this method you will apply any velocity/force logic. 
-		 */
-		public function fixedUpdate():void {
-			
-		}
-		
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize();
-			
-			if (!_box2D)
-				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
-			
-			_collisionComponent = entity.lookupComponentByName('collision') as CollisionComponent;
-			
-			//Override these to customize your Box2D initialization. Things must be done in this order.
-			defineBody();
-			createBody();
-			createShape();
-			defineFixture();
-			createFixture();
-			defineJoint();
-			createJoint();
-		}
-		
-		override public function destroy():void {
-			
-			_box2D.world.DestroyBody(_body);
-			
-			super.destroy();
-		}
-		
+
+	protected var _x : Number = 0;
+
 		public function get x():Number
 		{
 			if (_body)
@@ -122,11 +44,11 @@ package citrus.system.components.box2d {
 			else
 				return _x * _box2D.scale;
 		}
-		
+
 		public function set x(value:Number):void
 		{
 			_x = value / _box2D.scale;
-			
+
 			if (_body)
 			{
 				var pos:b2Vec2 = _body.GetPosition();
@@ -134,7 +56,9 @@ package citrus.system.components.box2d {
 				_body.SetTransform(new b2Transform(pos, b2Mat22.FromAngle(_body.GetAngle())));
 			}
 		}
-			
+
+	protected var _y : Number = 0;
+		
 		public function get y():Number
 		{
 			if (_body)
@@ -142,11 +66,11 @@ package citrus.system.components.box2d {
 			else
 				return _y * _box2D.scale;
 		}
-		
+
 		public function set y(value:Number):void
 		{
 			_y = value / _box2D.scale;
-			
+
 			if (_body)
 			{
 				var pos:b2Vec2 = _body.GetPosition();
@@ -154,7 +78,9 @@ package citrus.system.components.box2d {
 				_body.SetTransform(new b2Transform(pos, b2Mat22.FromAngle(_body.GetAngle())));
 			}
 		}
-		
+
+	protected var _rotation : Number = 0;
+
 		public function get rotation():Number
 		{
 			if (_body)
@@ -162,18 +88,20 @@ package citrus.system.components.box2d {
 			else
 				return _rotation * 180 / Math.PI;
 		}
-		
+
 		public function set rotation(value:Number):void
 		{
 			_rotation = value * Math.PI / 180;
-			
+
 			if (_body)
 				_body.SetTransform(new b2Transform(_body.GetPosition(), b2Mat22.FromAngle(_rotation)));
 		}
+
+	protected var _width : Number = 1;
 		
 		/**
-		 * This can only be set in the constructor parameters. 
-		 */		
+		 * This can only be set in the constructor parameters.
+		 */
 		public function get width():Number
 		{
 			return _width * _box2D.scale;
@@ -182,16 +110,18 @@ package citrus.system.components.box2d {
 		public function set width(value:Number):void
 		{
 			_width = value / _box2D.scale;
-			
+
 			if (_initialized)
 			{
 				trace("Warning: You cannot set " + this + " width after it has been created. Please set it in the constructor.");
 			}
 		}
+
+	protected var _height : Number = 1;
 		
 		/**
-		 * This can only be set in the constructor parameters. 
-		 */	
+		 * This can only be set in the constructor parameters.
+		 */
 		public function get height():Number
 		{
 			return _height * _box2D.scale;
@@ -200,16 +130,18 @@ package citrus.system.components.box2d {
 		public function set height(value:Number):void
 		{
 			_height = value / _box2D.scale;
-			
+
 			if (_initialized)
 			{
 				trace("Warning: You cannot set " + this + " height after it has been created. Please set it in the constructor.");
 			}
 		}
+
+	protected var _radius : Number = 0;
 		
 		/**
-		 * This can only be set in the constructor parameters. 
-		 */	
+		 * This can only be set in the constructor parameters.
+		 */
 		public function get radius():Number
 		{
 			return _radius * _box2D.scale;
@@ -221,24 +153,176 @@ package citrus.system.components.box2d {
 		public function set radius(value:Number):void
 		{
 			_radius = value / _box2D.scale;
-			
+
 			if (_initialized)
 			{
 				trace("Warning: You cannot set " + this + " radius after it has been created. Please set it in the constructor.");
 			}
 		}
+
+	protected var _beginContactCallEnabled : Boolean = false;
 		
 		/**
-		 * A direction reference to the Box2D body associated with this object.
+		 * This flag determines if the <code>handleBeginContact</code> method is called or not. Default is false, it saves some performances.
 		 */
-		public function get body():b2Body
+		public function get beginContactCallEnabled() : Boolean
+		{
+			return _beginContactCallEnabled;
+		}
+
+	/**
+	 * Enable or disable the <code>handleBeginContact</code> method to be called. It doesn't change physics behavior.
+	 */
+	public function set beginContactCallEnabled(beginContactCallEnabled : Boolean) : void
+	{
+		_beginContactCallEnabled = beginContactCallEnabled;
+	}
+
+	protected var _endContactCallEnabled : Boolean = false;
+
+	/**
+	 * This flag determines if the <code>handleEndContact</code> method is called or not. Default is false, it saves some performances.
+	 */
+	public function get endContactCallEnabled() : Boolean
+	{
+		return _endContactCallEnabled;
+	}
+
+	/**
+	 * Enable or disable the <code>handleEndContact</code> method to be called. It doesn't change physics behavior.
+	 */
+	public function set endContactCallEnabled(value : Boolean) : void
+	{
+		_endContactCallEnabled = value;
+	}
+
+	protected var _preContactCallEnabled : Boolean = false;
+
+	/**
+	 * This flag determines if the <code>handlePreSolve</code> method is called or not. Default is false, it saves some performances.
+	 */
+	public function get preContactCallEnabled() : Boolean
+	{
+		return _preContactCallEnabled;
+	}
+
+	/**
+	 * Enable or disable the <code>handlePreSolve</code> method to be called. It doesn't change physics behavior.
+	 */
+	public function set preContactCallEnabled(value : Boolean) : void
+	{
+		_preContactCallEnabled = value;
+	}
+
+	protected var _postContactCallEnabled : Boolean = false;
+
+	/**
+	 * This flag determines if the <code>handlePostSolve</code> method is called or not. Default is false, it saves some performances.
+	 */
+	public function get postContactCallEnabled() : Boolean
+	{
+		return _postContactCallEnabled;
+	}
+
+	/**
+	 * Enable or disable the <code>handlePostSolve</code> method to be called. It doesn't change physics behavior.
+	 */
+	public function set postContactCallEnabled(value : Boolean) : void
+	{
+		_postContactCallEnabled = value;
+	}
+
+	/**
+	 * No depth in a 2D Physics world.
+	 */
+	public function get depth() : Number
+	{
+		return 0;
+	}
+
+	public function get z() : Number
+	{
+		return 0;
+	}
+
+	override public function initialize(poolObjectParams : Object = null) : void
+	{
+
+		super.initialize();
+
+		if (!_box2D) {
+			throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
+		}
+
+		_collisionComponent = entity.lookupComponentByName('collision') as CollisionComponent;
+
+		//Override these to customize your Box2D initialization. Things must be done in this order.
+		defineBody();
+		createBody();
+		createShape();
+		defineFixture();
+		createFixture();
+		defineJoint();
+		createJoint();
+	}
+
+	override public function destroy() : void
+	{
+
+		_box2D.world.DestroyBody(_body);
+
+		super.destroy();
+	}
+
+	/**
+	 * handled by collision component
+	 */
+	public function handleBeginContact(contact : b2Contact) : void
+	{
+		_collisionComponent.handleBeginContact(contact);
+	}
+
+	/**
+	 * handled by collision component
+	 */
+	public function handleEndContact(contact : b2Contact) : void
+	{
+		_collisionComponent.handleEndContact(contact);
+	}
+
+	/**
+	 * handled by collision component
+	 */
+	public function handlePreSolve(contact : b2Contact, oldManifold : b2Manifold) : void
+	{
+		_collisionComponent.handlePreSolve(contact, oldManifold);
+	}
+
+	/**
+	 * handled by collision component
+	 */
+	public function handlePostSolve(contact : b2Contact, impulse : b2ContactImpulse) : void
+	{
+		_collisionComponent.handlePostSolve(contact, impulse);
+	}
+
+	/**
+	 * This method doesn't depend of your application enter frame. Ideally, the time between two calls never change.
+	 * In this method you will apply any velocity/force logic.
+	 */
+	public function fixedUpdate() : void
+	{
+
+	}
+
+	public function getBody() : *
 		{
 			return _body;
 		}
 		
 		/**
-		 * This method will often need to be overridden to provide additional definition to the Box2D body object. 
-		 */		
+		 * This method will often need to be overridden to provide additional definition to the Box2D body object.
+		 */
 		protected function defineBody():void
 		{
 			_bodyDef = new b2BodyDef();
@@ -248,8 +332,8 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overridden to customize the Box2D body object. 
-		 */	
+		 * This method will often need to be overridden to customize the Box2D body object.
+		 */
 		protected function createBody():void
 		{
 			_body = _box2D.world.CreateBody(_bodyDef);
@@ -260,7 +344,7 @@ package citrus.system.components.box2d {
 		 * This method will often need to be overridden to customize the Box2D shape object.
 		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
 		 * definition and instead create a custom shape, such as a line or circle.
-		 */	
+		 */
 		protected function createShape():void
 		{
 			if (_radius != 0) {
@@ -273,8 +357,8 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overridden to provide additional definition to the Box2D fixture object. 
-		 */	
+		 * This method will often need to be overridden to provide additional definition to the Box2D fixture object.
+		 */
 		protected function defineFixture():void
 		{
 			_fixtureDef = new b2FixtureDef();
@@ -287,8 +371,8 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overridden to customize the Box2D fixture object. 
-		 */	
+		 * This method will often need to be overridden to customize the Box2D fixture object.
+		 */
 		protected function createFixture():void
 		{
 			_fixture = _body.CreateFixture(_fixtureDef);
@@ -299,93 +383,21 @@ package citrus.system.components.box2d {
 		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
 		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
 		 * and b2Joint object.
-		 */	
+		 */
 		protected function defineJoint():void
-		{
-			
-		}
-		
-		/**
-		 * This method will often need to be overridden to customize the Box2D joint object. 
-		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
-		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
-		 * and b2Joint object.
-		 */		
-		protected function createJoint():void
 		{
 
 		}
 		
 		/**
-		 * No depth in a 2D Physics world.
+		 * This method will often need to be overridden to customize the Box2D joint object.
+		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
+		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
+		 * and b2Joint object.
 		 */
-		public function get depth():Number {
-			return 0;
-		}
-		
-		public function get z():Number {
-			return 0;
-		}
-		
-		public function getBody():*
+		protected function createJoint():void
 		{
-			return _body;
-		}
-		
-		/**
-		 * This flag determines if the <code>handleBeginContact</code> method is called or not. Default is false, it saves some performances.
-		 */
-		public function get beginContactCallEnabled():Boolean {
-			return _beginContactCallEnabled;
-		}
-		
-		/**
-		 * Enable or disable the <code>handleBeginContact</code> method to be called. It doesn't change physics behavior.
-		 */
-		public function set beginContactCallEnabled(beginContactCallEnabled:Boolean):void {
-			_beginContactCallEnabled = beginContactCallEnabled;
-		}
-		
-		/**
-		 * This flag determines if the <code>handleEndContact</code> method is called or not. Default is false, it saves some performances.
-		 */
-		public function get endContactCallEnabled():Boolean {
-			return _endContactCallEnabled;
-		}
-		
-		/**
-		 * Enable or disable the <code>handleEndContact</code> method to be called. It doesn't change physics behavior.
-		 */
-		public function set endContactCallEnabled(value:Boolean):void {
-			_endContactCallEnabled = value;
-		}
-		
-		/**
-		 * This flag determines if the <code>handlePreSolve</code> method is called or not. Default is false, it saves some performances.
-		 */
-		public function get preContactCallEnabled():Boolean {
-			return _preContactCallEnabled;
-		}
-		
-		/**
-		 * Enable or disable the <code>handlePreSolve</code> method to be called. It doesn't change physics behavior.
-		 */
-		public function set preContactCallEnabled(value:Boolean):void {
-			_preContactCallEnabled = value;
-		}
-		
-		/**
-		 * This flag determines if the <code>handlePostSolve</code> method is called or not. Default is false, it saves some performances.
-		 */
-		public function get postContactCallEnabled():Boolean {
-			return _postContactCallEnabled;
-		}
-		
-		/**
-		 * Enable or disable the <code>handlePostSolve</code> method to be called. It doesn't change physics behavior.
-		 */
-		public function set postContactCallEnabled(value:Boolean):void {
-			_postContactCallEnabled = value;
+
 		}
 	}
 }
