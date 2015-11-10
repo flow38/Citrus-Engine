@@ -97,7 +97,7 @@
 			<arg line="-include-sources ../src/citrus/core/MediatorState.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusEngine.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusGroup.as" />
-			<arg line="-include-sources ../src/citrus/core/CitrusObject.as" />
+			<arg line="-include-sources ../src/citrus/core/ICitrusObject.ass" />
 			<arg line="-include-sources ../src/citrus/core/Console.as" />
 			<arg line="-include-sources ../src/citrus/core/IState.as" />
 			<arg line="-include-sources ../src/citrus/core/State.as" />
