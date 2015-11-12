@@ -3,7 +3,7 @@ package melon.physics.nape.service {
 import flash.utils.Dictionary;
 
 import melon.core.MelonObject;
-import melon.system.physics.nape.enum.CbTypesEnum;
+import melon.system.component.physics.nape.enum.CbTypesEnum;
 
 import nape.callbacks.CbType;
 
