@@ -1,4 +1,4 @@
-package melon.system.messaging {
+package melon.system.component.messaging {
 import flash.utils.Dictionary;
 
 import melon.message.SignalObject;

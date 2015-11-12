@@ -1,4 +1,4 @@
-package melon.system.messaging {
+package melon.system.component.messaging {
 
 /**
  * ...
